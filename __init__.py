@@ -18,14 +18,9 @@ REPLACE_ENC = {
 
 class Command:
 
-    def show_dialog(self, caption, text, filename, lexer):
+    def show_dialog(self, caption, text, lexer):
 
-        self.caption = caption
-        self.text = text
-        self.filename = filename
-        self.lexer = lexer
-
-        self.h_dlg = self.init_editor_dlg()
+        self.h_dlg = self.init_editor_dlg(caption, text, lexer)
 
         self.pos_load()
         dlg_proc(self.h_dlg, DLG_SHOW_MODAL)
@@ -71,7 +66,6 @@ class Command:
             self.show_dialog(
                 _('Unsaved changes')+': '+fn_base,
                 text,
-                fn_base,
                 lexer
                 )
         elif place=='editor':
@@ -81,11 +75,11 @@ class Command:
             ed.set_prop(PROP_LEXER_FILE, lexer)
 
 
-    def init_editor_dlg(self):
+    def init_editor_dlg(self, caption, text, lexer):
 
         h=dlg_proc(0, DLG_CREATE)
         dlg_proc(h, DLG_PROP_SET, prop={
-            'cap': self.caption,
+            'cap': caption,
             'w': 900,
             'h': 500,
             'border': DBORDER_SIZE,
@@ -107,7 +101,7 @@ class Command:
 
         h_editor = dlg_proc(h, DLG_CTL_HANDLE, index=n)
         ed0 = Editor(h_editor)
-        ed0.set_text_all(self.text)
+        ed0.set_text_all(text)
         ed0.set_prop(PROP_MICROMAP, False)
         ed0.set_prop(PROP_MINIMAP, False)
         ed0.set_prop(PROP_RULER, False)
@@ -115,19 +109,19 @@ class Command:
         ed0.set_prop(PROP_GUTTER_BM, False)
         ed0.set_prop(PROP_RO, True)
 
-        if self.lexer in lexer_proc(LEXER_GET_LEXERS, False):
-            ed0.set_prop(PROP_LEXER_FILE, self.lexer)
+        if lexer in lexer_proc(LEXER_GET_LEXERS, False):
+            ed0.set_prop(PROP_LEXER_FILE, lexer)
         else:
             n = dlg_proc(h, DLG_CTL_ADD, 'label')
             dlg_proc(h, DLG_CTL_PROP_SET, index=n, prop={
                 'name': 'label_diff',
-                'cap': _('Install {} lexer if you want to see colors.').format(self.lexer),
+                'cap': _('Install {} lexer if you want to see colors.').format(lexer),
                 'align': ALIGN_BOTTOM,
                 'sp_a': 10
             })
 
         #set line states
-        is_diff = self.lexer=='Diff'
+        is_diff = lexer=='Diff'
         for i in range(ed0.get_line_count()):
             state = LINESTATE_NORMAL
             if is_diff:

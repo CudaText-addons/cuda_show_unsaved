@@ -64,18 +64,21 @@ class Command:
             msg_box(_('File is not changed'), MB_OK+MB_ICONINFO)
             return
 
+        text = '\n'.join(diff)+'\n'
+        lexer = 'Diff'
+
         if place=='modal':
             self.show_dialog(
-                _('Unsaved changes: ')+fn_base,
-                '\n'.join(diff)+'\n',
+                _('Unsaved changes')+': '+fn_base,
+                text,
                 fn_base,
-                'Diff'
+                lexer
                 )
         elif place=='editor':
             file_open('')
-            ed.set_text_all('\n'.join(diff)+'\n')
+            ed.set_text_all(text)
             ed.set_prop(PROP_TAB_TITLE, _('Unsaved changes'))
-            ed.set_prop(PROP_LEXER_FILE, 'Diff')
+            ed.set_prop(PROP_LEXER_FILE, lexer)
 
 
     def init_editor_dlg(self):

@@ -7,5 +7,10 @@ homepage=https://github.com/CudaText-addons/cuda_show_unsaved
 
 [item2]
 section=commands
-caption=Show Unsaved Changes
+caption=Show Unsaved Changes\Show in modal dialog
 method=show_unsaved
+
+[item3]
+section=commands
+caption=Show Unsaved Changes\Show in editor
+method=show_editor

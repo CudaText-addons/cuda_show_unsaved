@@ -1,2 +1,5 @@
+2023.02.27
++ add: command "Show in editor"
+
 2023.02.24
 + plugin was separated from CudaText distro

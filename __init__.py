@@ -36,6 +36,14 @@ class Command:
 
     def show_unsaved(self):
 
+        self.show_ex('modal')
+
+    def show_editor(self):
+
+        self.show_ex('editor')
+
+    def show_ex(self, place):
+
         fn = ed.get_filename()
         fn_base = os.path.basename(fn)
         if not fn: return
@@ -56,12 +64,18 @@ class Command:
             msg_box(_('File is not changed'), MB_OK+MB_ICONINFO)
             return
 
-        self.show_dialog(
-            _('Unsaved changes: ')+fn_base,
-            '\n'.join(diff)+'\n',
-            fn_base,
-            'Diff'
-            )
+        if place=='modal':
+            self.show_dialog(
+                _('Unsaved changes: ')+fn_base,
+                '\n'.join(diff)+'\n',
+                fn_base,
+                'Diff'
+                )
+        elif place=='editor':
+            file_open('')
+            ed.set_text_all('\n'.join(diff)+'\n')
+            ed.set_prop(PROP_TAB_TITLE, _('Unsaved changes'))
+            ed.set_prop(PROP_LEXER_FILE, 'Diff')
 
 
     def init_editor_dlg(self):

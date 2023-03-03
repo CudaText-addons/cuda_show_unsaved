@@ -3,3 +3,4 @@
 
 2023.02.24
 + plugin was separated from CudaText distro
++ add: i18n support (by Markus F.)

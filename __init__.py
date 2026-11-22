@@ -39,7 +39,7 @@ class Command:
 
     def show_ex(self, place):
 
-        fn = ed.get_filename()
+        fn = ed.get_prop(PROP_FN, '')
         fn_base = os.path.basename(fn)
         if not fn: return
 
